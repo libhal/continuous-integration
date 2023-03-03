@@ -1,0 +1,88 @@
+name: ✅ checks
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      library:
+        required: true
+        type: string
+      coverage:
+        default: true
+        type: boolean
+      fail_on_coverage:
+        default: false
+        type: boolean
+      coverage_threshold:
+        default: '40 80'
+        type: string
+      source_dir:
+        default: 'include/'
+        type: string
+      skip_deploy:
+        default: false
+        type: boolean
+      app_folder:
+        type: string
+        default: "demos"
+      repo:
+        type: string
+        default: ${{ github.repository }}
+
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      coverage: ${{ inputs.coverage }}
+      fail_on_coverage: ${{ inputs.fail_on_coverage }}
+      coverage_threshold: ${{ inputs.coverage_threshold }}
+    secrets: inherit
+
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      app_folder: ${{ inputs.app_folder }}
+      repo: ${{ inputs.repo }}
+    secrets: inherit
+
+  lint:
+    uses: ./.github/workflows/lint.yml
+    with:
+      library: ${{ inputs.library }}
+      source_dir: ${{ inputs.source_dir }}
+      repo: ${{ inputs.repo }}
+    secrets: inherit
+
+  docs:
+    uses: ./.github/workflows/docs.yml
+    with:
+      library: ${{ inputs.library }}
+      source_dir: ${{ inputs.source_dir }}
+      repo: ${{ inputs.repo }}
+    secrets: inherit
+
+  publish_artifacts:
+    needs: [ lint, docs, tests, build ]
+    uses: ./.github/workflows/publish.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+    secrets: inherit
+
+  deploy_package:
+    needs: [ lint, docs, tests, build ]
+    if: ${{ !inputs.skip_deploy }}
+    uses: ./.github/workflows/deploy.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+    secrets: inherit

@@ -1,0 +1,39 @@
+name: ✅ CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 12 * * 0'
+
+jobs:
+  libhal:
+    uses: ./.github/workflows/library_ci.yml
+    with:
+      library: libhal
+      repo: libhal/libhal
+    secrets: inherit
+
+  libhal-armcortex:
+    uses: ./.github/workflows/library_ci.yml
+    with:
+      library: libhal-armcortex
+      repo: libhal/libhal-armcortex
+    secrets: inherit
+
+  libhal-util:
+    uses: ./.github/workflows/library_ci.yml
+    with:
+      library: libhal-util
+      repo: libhal/libhal-util
+    secrets: inherit
+
+  libhal-lpc40xx:
+    uses: ./.github/workflows/library_ci.yml
+    with:
+      library: libhal-lpc40xx
+      repo: libhal/libhal-lpc40xx
+    secrets: inherit

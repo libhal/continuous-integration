@@ -1,0 +1,53 @@
+name: 🚀 publish
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      library:
+        required: true
+        type: string
+      repo:
+        required: true
+        type: string
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main' && github.repository == inputs.repo
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          repository: ${{ inputs.repo }}
+
+      - name: 📥 Install Conan
+        run: pip install conan
+
+      - uses: actions/download-artifact@master
+        with:
+          name: docs
+          path: docs/
+
+      - uses: actions/download-artifact@master
+        with:
+          name: coverage
+          path: docs/coverage
+
+      - name: Generate Latest Version Badge
+        run: wget "https://img.shields.io/badge/Latest%20Version-$(conan inspect . | grep version | cut -c 10- )-green" -O docs/latest_version.svg
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'docs/'
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

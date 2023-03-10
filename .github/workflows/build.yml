@@ -10,6 +10,9 @@ on:
       repo:
         required: true
         type: string
+      conan_version:
+        required: true
+        type: string
 
 jobs:
   find_directory:
@@ -43,7 +46,7 @@ jobs:
           repository: ${{ inputs.repo }}
 
       - name: 📥 Install CMake + Conan
-        run: pip3 install --upgrade cmake conan
+        run: pip3 install cmake conan==${{ inputs.conan_version }}
 
       - name: 📡 Add `libhal-trunk` conan remote
         run: conan remote add libhal-trunk

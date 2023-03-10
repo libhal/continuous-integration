@@ -28,6 +28,9 @@ on:
       repo:
         type: string
         default: ${{ github.repository }}
+      conan_version:
+        type: string
+        default: "2.0.1"
 
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -45,6 +48,7 @@ jobs:
       coverage: ${{ inputs.coverage }}
       fail_on_coverage: ${{ inputs.fail_on_coverage }}
       coverage_threshold: ${{ inputs.coverage_threshold }}
+      conan_version: ${{ inputs.conan_version }}
     secrets: inherit
 
   build:
@@ -52,6 +56,7 @@ jobs:
     with:
       app_folder: ${{ inputs.app_folder }}
       repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
     secrets: inherit
 
   lint:
@@ -85,4 +90,5 @@ jobs:
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
     secrets: inherit

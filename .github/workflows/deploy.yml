@@ -10,6 +10,9 @@ on:
       repo:
         required: true
         type: string
+      conan_version:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -21,7 +24,7 @@ jobs:
           submodules: true
 
       - name: 📥 Install CMake & Conan
-        run: pip install cmake conan==2.0.0
+        run: pip3 install cmake conan==${{ inputs.conan_version }}
 
       - name: 📡 Add `libhal-trunk` conan remote
         run: |

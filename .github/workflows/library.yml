@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       library:
-        required: true
+        default: ${{ github.event.repository.name }}
         type: string
       coverage:
         default: true

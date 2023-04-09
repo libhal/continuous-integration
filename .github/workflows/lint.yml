@@ -34,26 +34,49 @@ jobs:
       # Because inputs.library is required for workflow_calls, if this value is
       # blank it means that the workflow was ran in libhal and not
       # remotely.
-      - name: 🖨️ Cloning .naming.style from libhal
+      - name: 🌐 Downloading .naming.style from libhal
         run: wget https://raw.githubusercontent.com/libhal/libhal/main/.naming.style -O .naming.style
 
-      - name: 📃 Naming Convention Check
+      - name: 🌐 Downloading .clang-format from libhal
+        run: wget https://raw.githubusercontent.com/libhal/libhal/main/.clang-format -O .clang-format
+
+      - name: 📥 Install NCC (Naming Convention Check)
+        shell: bash
+        run: git clone https://github.com/nithinn/ncc.git ncc
+
+      - name: 📃 Naming Convention Check in Source Directory
         shell: bash
         if: always()
         run: |
-              git clone https://github.com/nithinn/ncc.git ncc
               ./ncc/ncc.py --recurse --path ${{ inputs.source_dir }} \
               --exclude */third_party/* \
               --style .naming.style | tee ncc.stderr
               [ ! -s ncc.stderr ]
 
-      - name: 🖨️ Cloning .clang-format from libhal
-        run: wget https://raw.githubusercontent.com/libhal/libhal/main/.clang-format -O .clang-format
+      - name: 📃 Naming Convention Check in Tests
+        shell: bash
+        if: always()
+        run: |
+              ./ncc/ncc.py --recurse --path ./tests/ \
+              --exclude */third_party/* \
+              --style .naming.style | tee ncc.stderr
+              [ ! -s ncc.stderr ]
 
-      - name: 🧹 Format Check
+      - name: 🧹 Format Check Source Code
         uses: DoozyX/clang-format-lint-action@v0.15
+        if: always()
         with:
           source: ${{ inputs.source_dir }}
+          exclude: './third_party/*'
+          extensions: 'hpp,cpp'
+          clangFormatVersion: 15
+          style: file
+
+      - name: 🧹 Format Check Test Code
+        uses: DoozyX/clang-format-lint-action@v0.15
+        if: always()
+        with:
+          source: ./tests/
           exclude: './third_party/*'
           extensions: 'hpp,cpp'
           clangFormatVersion: 15

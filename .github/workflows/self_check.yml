@@ -31,9 +31,9 @@ jobs:
       repo: libhal/libhal-util
     secrets: inherit
 
-  libhal-lpc40xx:
+  libhal-lpc40:
     uses: ./.github/workflows/library.yml
     with:
-      library: libhal-lpc40xx
-      repo: libhal/libhal-lpc40xx
+      library: libhal-lpc40
+      repo: libhal/libhal-lpc40
     secrets: inherit

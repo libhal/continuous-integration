@@ -64,7 +64,7 @@ jobs:
 
       - name: 📡 Add `libhal-trunk` conan remote
         run: conan remote add libhal-trunk
-             https://libhal.jfrog.io/artifactory/api/conan/trunk-conan
+          https://libhal.jfrog.io/artifactory/api/conan/trunk-conan
 
       - name: 📡 Create and setup default profile
         run: conan profile detect --force
@@ -74,7 +74,7 @@ jobs:
 
       - name: 📦 Generate Package & Install Library (if possible)
         continue-on-error: true
-        run: conan create . --build=missing -s compiler.version=11 -s compiler.cppstd=20 -s compiler=gcc -s compiler.libcxx=libstdc++ -s:b compiler.cppstd=20 -s:b compiler=gcc -s:b compiler.version=11 -s:b compiler.libcxx=libstdc++ -c tools.build:skip_test=True
+        run: conan create . --build=missing -s compiler.version=11 -s compiler.cppstd=20 -s compiler=gcc -s compiler.libcxx=libstdc++ -s:b compiler.cppstd=20 -s:b compiler=gcc -s:b compiler.version=11 -s:b compiler.libcxx=libstdc++
 
       - name: 🏗️ Build
         working-directory: ${{ inputs.app_folder }}

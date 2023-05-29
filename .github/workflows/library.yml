@@ -28,10 +28,10 @@ on:
         default: false
         type: boolean
       coverage_threshold:
-        default: '40 80'
+        default: "40 80"
         type: string
       source_dir:
-        default: 'include/'
+        default: "include/"
         type: string
       skip_deploy:
         default: false
@@ -44,8 +44,7 @@ on:
         default: ${{ github.repository }}
       conan_version:
         type: string
-        default: "2.0.1"
-
+        default: "2.0.6"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -90,7 +89,7 @@ jobs:
     secrets: inherit
 
   publish_artifacts:
-    needs: [ lint, docs, tests, build ]
+    needs: [lint, docs, tests, build]
     uses: ./.github/workflows/publish.yml
     with:
       library: ${{ inputs.library }}
@@ -98,7 +97,7 @@ jobs:
     secrets: inherit
 
   deploy_package:
-    needs: [ lint, docs, tests, build ]
+    needs: [lint, docs, tests, build]
     if: ${{ !inputs.skip_deploy }}
     uses: ./.github/workflows/deploy.yml
     with:

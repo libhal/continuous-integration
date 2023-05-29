@@ -78,7 +78,7 @@ jobs:
 
       - name: 📡 Add `libhal-trunk` conan remote
         run: conan remote add libhal-trunk
-             https://libhal.jfrog.io/artifactory/api/conan/trunk-conan
+          https://libhal.jfrog.io/artifactory/api/conan/trunk-conan
 
       - name: 📡 Create and setup default profile
         run: conan profile detect --force
@@ -87,7 +87,7 @@ jobs:
         run: conan profile show
 
       - name: 🔬 Build & Run Unit Tests
-        run: conan create . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug -c tools.build:skip_test=True -tf tests
+        run: conan build . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
 
       - name: 📥 Install GCovr
         if: ${{ matrix.enable_coverage }}
@@ -95,15 +95,15 @@ jobs:
 
       - name: 🔎 Generate Code Coverage
         if: ${{ matrix.enable_coverage }}
-        working-directory: tests/build
+        working-directory: build
         run: |
-             mkdir coverage/ && python3 -m gcovr --root ../../ --exclude ".*/third_party/.*" --cobertura coverage/coverage.xml --html coverage/index.html --html-details --sort-percentage
+          mkdir coverage/ && python3 -m gcovr --root ../../ --exclude ".*/third_party/.*" --cobertura coverage/coverage.xml --html coverage/index.html --html-details --sort-percentage
 
       - name: Coverage Summary
         if: ${{ matrix.enable_coverage }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: tests/build/coverage/coverage.xml
+          filename: build/coverage/coverage.xml
           badge: true
           fail_below_min: ${{ inputs.fail_on_coverage }}
           format: markdown
@@ -116,13 +116,13 @@ jobs:
       - name: Extract & Save Coverage SVG
         if: ${{ matrix.enable_coverage }}
         run: wget
-             $(cat code-coverage-results.md |
-               grep -Eo 'https://img.shields.io/badge/[^)]*')
-              -O tests/build/coverage/coverage.svg
+          $(cat code-coverage-results.md |
+          grep -Eo 'https://img.shields.io/badge/[^)]*')
+          -O build/coverage/coverage.svg
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.enable_coverage }}
         with:
           name: coverage
           retention-days: 1
-          path: tests/build/coverage/
+          path: build/coverage/

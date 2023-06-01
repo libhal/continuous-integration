@@ -21,7 +21,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 12 * * 0'
+    - cron: "0 12 * * 0"
 
 jobs:
   libhal:
@@ -50,4 +50,20 @@ jobs:
     with:
       library: libhal-lpc40
       repo: libhal/libhal-lpc40
+    secrets: inherit
+
+  libhal-lpc4072:
+    uses: ./.github/workflows/platform_deploy.yml
+    with:
+      library: libhal-lpc40
+      repo: libhal/libhal-lpc40
+      profile: lpc4072
+    secrets: inherit
+
+  libhal-lpc4088:
+    uses: ./.github/workflows/platform_deploy.yml
+    with:
+      library: libhal-lpc40
+      repo: libhal/libhal-lpc40
+      profile: lpc4088
     secrets: inherit

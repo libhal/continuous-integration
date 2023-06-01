@@ -58,40 +58,61 @@ jobs:
         shell: bash
         run: git clone https://github.com/nithinn/ncc.git ncc
 
-      - name: 📃 Naming Convention Check in Source Directory
+      - name: Check if `src/` directory existence
+        id: check_src_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "src/"
+
+      - name: Check if `tests/` directory existence
+        id: check_tests_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "tests/"
+
+      - name: 📃 Naming Convention Check in `include/` Directory
         shell: bash
         if: always()
         run: |
-              ./ncc/ncc.py --recurse --path ${{ inputs.source_dir }} \
-              --exclude */third_party/* \
-              --style .naming.style | tee ncc.stderr
-              [ ! -s ncc.stderr ]
+          ./ncc/ncc.py --recurse --path include/ \
+          --exclude */third_party/* \
+          --style .naming.style | tee ncc.stderr
+          [ ! -s ncc.stderr ]
 
-      - name: 📃 Naming Convention Check in Tests
+      - name: 📃 Naming Convention Check in `tests/`
         shell: bash
-        if: always()
+        if: always() && steps.check_tests_files.outputs.files_exists == 'true'
         run: |
-              ./ncc/ncc.py --recurse --path ./tests/ \
-              --exclude */third_party/* \
-              --style .naming.style | tee ncc.stderr
-              [ ! -s ncc.stderr ]
+          ./ncc/ncc.py --recurse --path ./tests/ \
+          --exclude */third_party/* \
+          --style .naming.style | tee ncc.stderr
+          [ ! -s ncc.stderr ]
 
-      - name: 🧹 Format Check Source Code
+      - name: 📃 Naming Convention Check in `src/` Directory
+        shell: bash
+        if: always() && steps.check_src_files.outputs.files_exists == 'true'
+        run: |
+          ./ncc/ncc.py --recurse --path src/ \
+          --exclude */third_party/* \
+          --style .naming.style | tee ncc.stderr
+          [ ! -s ncc.stderr ]
+
+      - name: 🧹 Format Check `src/` directory
         uses: DoozyX/clang-format-lint-action@v0.15
         if: always()
         with:
           source: ${{ inputs.source_dir }}
-          exclude: './third_party/*'
-          extensions: 'hpp,cpp'
+          exclude: "./third_party/*"
+          extensions: "hpp,cpp"
           clangFormatVersion: 15
           style: file
 
-      - name: 🧹 Format Check Test Code
+      - name: 🧹 Format Check `test/` code
         uses: DoozyX/clang-format-lint-action@v0.15
         if: always()
         with:
           source: ./tests/
-          exclude: './third_party/*'
-          extensions: 'hpp,cpp'
+          exclude: "./third_party/*"
+          extensions: "hpp,cpp"
           clangFormatVersion: 15
           style: file

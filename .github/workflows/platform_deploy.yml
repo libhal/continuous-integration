@@ -67,8 +67,8 @@ jobs:
         run: conan config install -sf profiles/baremetal https://github.com/libhal/conan-config.git
 
       - name: Install processor profiles
-        if: ${{ inputs.processor_profile }} != ""
-        run: conan config install -tf profiles -sf conan/profiles/ ${{ processor_profile }}
+        if: inputs.processor_profile != ''
+        run: conan config install -tf profiles -sf conan/profiles/ ${{ inputs.processor_profile }}
 
       - name: Install platform profiles
         run: conan config install -tf profiles conan/profiles/

@@ -58,6 +58,7 @@ jobs:
       library: libhal-lpc40
       repo: libhal/libhal-lpc40
       profile: lpc4072
+      processor_profile: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit
 
   libhal-lpc4088:
@@ -66,4 +67,13 @@ jobs:
       library: libhal-lpc40
       repo: libhal/libhal-lpc40
       profile: lpc4088
+      processor_profile: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit
+
+  libhal-cortex-m0:
+    uses: ./.github/workflows/platform_deploy.yml
+    with:
+      library: libhal-armcortex
+      repo: libhal/libhal-armcortex
+      profile: cortex-m0
     secrets: inherit

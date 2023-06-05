@@ -52,6 +52,13 @@ jobs:
       repo: libhal/libhal-lpc40
     secrets: inherit
 
+  libhal-soft:
+    uses: ./.github/workflows/library.yml
+    with:
+      library: libhal-soft
+      repo: libhal/libhal-soft
+    secrets: inherit
+
   libhal-lpc4072:
     uses: ./.github/workflows/platform_deploy.yml
     with:
@@ -78,7 +85,7 @@ jobs:
       profile: cortex-m0
     secrets: inherit
 
-  libhal-soft:
+  libhal-soft-package:
     uses: ./.github/workflows/device_deploy.yml
     with:
       library: libhal-soft

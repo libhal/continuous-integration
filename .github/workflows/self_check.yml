@@ -77,3 +77,10 @@ jobs:
       repo: libhal/libhal-armcortex
       profile: cortex-m0
     secrets: inherit
+
+  libhal-soft:
+    uses: ./.github/workflows/device_deploy.yml
+    with:
+      library: libhal-soft
+      repo: libhal/libhal-soft
+    secrets: inherit

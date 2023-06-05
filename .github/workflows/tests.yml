@@ -49,18 +49,21 @@ jobs:
             standard_library: libstdc++
             installations:
             enable_coverage: ${{ inputs.coverage }}
+            profile_path: profiles/x86_64/linux/
 
           - toolchain: gcc
             compiler_version: 11
             os: ubuntu-20.04
             standard_library: libstdc++
             installations: sudo apt install build-essential g++-11 && sudo ln -sf g++-11 /usr/bin/g++
+            profile_path: profiles/x86_64/linux/
 
           - toolchain: apple-clang
             compiler_version: 14
             os: macos-12
             standard_library: libc++
             installations:
+            profile_path: profiles/x86_64/mac/
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -85,6 +88,9 @@ jobs:
 
       - name: 👁️‍🗨️ Show conan profile
         run: conan profile show
+
+      - name: 📡 Install default profiles
+        run: conan config install -sf ${{ matrix.profile_path }} -tf profiles https://github.com/libhal/conan-config.git
 
       - name: 🔬 Build & Run Unit Tests
         run: conan build . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug

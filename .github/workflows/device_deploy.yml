@@ -1,0 +1,76 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Device 🏗️ Build 🚀 Deploy
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      library:
+        default: ${{ github.event.repository.name }}
+        type: string
+      repo:
+        type: string
+        default: ${{ github.repository }}
+      conan_version:
+        type: string
+        default: "2.0.6"
+
+jobs:
+  cortex-m0:
+    uses: ./.github/workflows/device_deploy_unit.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
+      profile: cortex-m0
+      profile_source: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit
+  cortex-m1:
+    uses: ./.github/workflows/device_deploy_unit.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
+      profile: cortex-m1
+      profile_source: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit
+  cortex-m3:
+    uses: ./.github/workflows/device_deploy_unit.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
+      profile: cortex-m3
+      profile_source: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit
+  cortex-m4:
+    uses: ./.github/workflows/device_deploy_unit.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
+      profile: cortex-m4
+      profile_source: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit
+  cortex-m4f:
+    uses: ./.github/workflows/device_deploy_unit.yml
+    with:
+      library: ${{ inputs.library }}
+      repo: ${{ inputs.repo }}
+      conan_version: ${{ inputs.conan_version }}
+      profile: cortex-m4f
+      profile_source: https://github.com/libhal/libhal-armcortex.git
+    secrets: inherit

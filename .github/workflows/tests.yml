@@ -89,6 +89,9 @@ jobs:
       - name: 🔬 Build & Run Unit Tests
         run: conan build . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
 
+      - name: 🔬 Create & Run Unit Tests
+        run: conan create . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
+
       - name: 📥 Install GCovr
         if: ${{ matrix.enable_coverage }}
         run: pip3 install gcovr

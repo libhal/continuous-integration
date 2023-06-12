@@ -86,8 +86,28 @@ jobs:
     secrets: inherit
 
   libhal-soft-package:
-    uses: ./.github/workflows/device_deploy.yml
+    uses: ./.github/workflows/deploy.yml
     with:
       library: libhal-soft
       repo: libhal/libhal-soft
+    secrets: inherit
+
+  libhal-rmd-demos-lpc4078:
+    uses: ./.github/workflows/demo_builder.yml
+    with:
+      library: libhal-rmd
+      repo: libhal/libhal-rmd
+      profile: lpc4078
+      processor_profile: https://github.com/libhal/libhal-armcortex.git
+      platform_profile: https://github.com/libhal/libhal-lpc40.git
+    secrets: inherit
+
+  libhal-rmd-demos-lpc4074:
+    uses: ./.github/workflows/demo_builder.yml
+    with:
+      library: libhal-rmd
+      repo: libhal/libhal-rmd
+      profile: lpc4074
+      processor_profile: https://github.com/libhal/libhal-armcortex.git
+      platform_profile: https://github.com/libhal/libhal-lpc40.git
     secrets: inherit

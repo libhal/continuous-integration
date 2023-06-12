@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Device 🏗️ Build 🚀 Deploy
+name: Device 🏗️ Package 🚀 Deploy
+
+# Builds packages for every device and architecture libhal supports
 
 on:
   workflow_dispatch:
@@ -30,7 +32,7 @@ on:
 
 jobs:
   cortex-m0:
-    uses: ./.github/workflows/device_deploy_unit.yml
+    uses: ./.github/workflows/deploy_unit.yml
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}
@@ -39,7 +41,7 @@ jobs:
       profile_source: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit
   cortex-m1:
-    uses: ./.github/workflows/device_deploy_unit.yml
+    uses: ./.github/workflows/deploy_unit.yml
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}
@@ -48,7 +50,7 @@ jobs:
       profile_source: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit
   cortex-m3:
-    uses: ./.github/workflows/device_deploy_unit.yml
+    uses: ./.github/workflows/deploy_unit.yml
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}
@@ -57,7 +59,7 @@ jobs:
       profile_source: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit
   cortex-m4:
-    uses: ./.github/workflows/device_deploy_unit.yml
+    uses: ./.github/workflows/deploy_unit.yml
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}
@@ -66,7 +68,7 @@ jobs:
       profile_source: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit
   cortex-m4f:
-    uses: ./.github/workflows/device_deploy_unit.yml
+    uses: ./.github/workflows/deploy_unit.yml
     with:
       library: ${{ inputs.library }}
       repo: ${{ inputs.repo }}

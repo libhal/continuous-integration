@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Platform 📦 Package 🚀 Deploy
+name: Profile Demo 🏗️ Builder
 
 on:
   workflow_dispatch:
@@ -31,6 +31,9 @@ on:
         type: string
         required: true
       processor_profile:
+        type: string
+        default: ""
+      platform_profile:
         type: string
         default: ""
 
@@ -71,20 +74,11 @@ jobs:
         run: conan config install -tf profiles -sf conan/profiles/ ${{ inputs.processor_profile }}
 
       - name: Install platform profiles
-        run: conan config install -tf profiles conan/profiles/
+        if: inputs.platform_profile != ''
+        run: conan config install -tf profiles -sf conan/profiles/ ${{ inputs.platform_profile }}
 
-      - name: 📦 Create `Debug` package for ${{ inputs.profile }}
-        run: conan create . -pr ${{ inputs.profile }} -s build_type=Debug -b missing
+      - name: 📦 Build package using ${{ inputs.profile }}
+        run: conan create . -pr ${{ inputs.profile }} -s build_type=MinSizeRel
 
-      - name: 📦 Create `RelWithDebInfo` package for ${{ inputs.profile }}
-        run: conan create . -pr ${{ inputs.profile }} -s build_type=RelWithDebInfo -b missing
-
-      - name: 📦 Create `MinSizeRel` package for ${{ inputs.profile }}
-        run: conan create . -pr ${{ inputs.profile }} -s build_type=MinSizeRel -b missing
-
-      - name: 📦 Create `Release` package for ${{ inputs.profile }}
-        run: conan create . -pr ${{ inputs.profile }} -s build_type=Release -b missing
-
-      - name: 🆙 Upload package to `libhal-trunk` repo
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: conan upload "${{ inputs.library }}/*" --confirm -r=libhal-trunk
+      - name: 🏗️ Build demos for ${{ inputs.profile }}
+        run: conan build demos -pr ${{ inputs.profile }} -s build_type=MinSizeRel

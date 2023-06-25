@@ -69,6 +69,9 @@ jobs:
       - name: Install libhal settings_user.yml
         run: conan config install -sf profiles/baremetal https://github.com/libhal/conan-config.git
 
+      - name: Install host OS profiles
+        run: conan config install -sf profiles/x86_64/linux/ -tf profiles https://github.com/libhal/conan-config.git
+
       - name: Install processor profiles
         if: inputs.processor_profile != ''
         run: conan config install -tf profiles -sf conan/profiles/ ${{ inputs.processor_profile }}

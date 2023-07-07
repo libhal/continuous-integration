@@ -30,6 +30,9 @@ on:
       profile:
         type: string
         required: true
+      upload:
+        type: boolean
+        default: false
       processor_profile:
         type: string
         default: ""
@@ -92,5 +95,5 @@ jobs:
         run: conan build demos -pr ${{ inputs.profile }} -s build_type=MinSizeRel
 
       - name: 🆙 Upload package to `libhal-trunk` repo
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main' && inputs.upload
         run: conan upload "${{ inputs.library }}/*" --confirm -r=libhal-trunk

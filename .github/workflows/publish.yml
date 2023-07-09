@@ -55,6 +55,7 @@ jobs:
         run: wget "https://img.shields.io/badge/Latest%20Version-$(conan inspect . | grep version | cut -c 10- | sed s/-/~/ )-green" -O docs/latest_version.svg
 
       - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v2
 
       - name: Upload artifact
@@ -69,5 +70,6 @@ jobs:
           generate_release_notes: true
 
       - name: 🚀 Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v1

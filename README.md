@@ -1,4 +1,4 @@
-# libhal/ci
+# [`libhal/ci`](https://github.com/libhal/ci) - Continuous Integration
 
 The `libhal/ci` repository provides a collection of GitHub Actions workflows
 that are designed to automate the process of building, testing, and deploying
@@ -62,43 +62,6 @@ Here is an example of how to use the `library.yml` and `platform_deploy.yml`
 workflows from the `libhal/ci` repository:
 
 ```yaml
-name: ✅ Checks
-
-on:
-  workflow_dispatch:
-  pull_request:
-  push:
-    tags:
-      - "*"
-    branches:
-      - main
-  schedule:
-    - cron: "0 12 * * 0"
-
-jobs:
-  libhal:
-    uses: libhal/ci/.github/workflows/library.yml
-    with:
-      library: libhal
-      repo: libhal/libhal
-    secrets: inherit
-
-  stm32f103c8-cortex-m3-upload:
-    uses: libhal/ci/.github/workflows/platform_deploy.yml@4.0.0
-    with:
-      profile: stm32f103c8
-      upload: true
-      processor_profile: https://github.com/libhal/libhal-armcortex.git
-    secrets: inherit
-
-  libhal-stm32f1:
-    uses: libhal/ci/.github/workflows/platform_deploy.yml
-    with:
-      library: libhal-stm32f1
-      repo: libhal/libhal-stm32f1
-      profile: stm32f1
-    secrets: inherit
-
 name: ✅ Checks
 
 on:

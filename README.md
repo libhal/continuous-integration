@@ -3,7 +3,7 @@
 Contains helper & premade continuous integration scripts for libhal projects
 and libraries
 
-## :busts_in_silhouette: Contributing
+## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
 

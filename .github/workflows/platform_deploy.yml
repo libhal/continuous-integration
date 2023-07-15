@@ -91,7 +91,14 @@ jobs:
       - name: 📦 Create `Release` package for ${{ inputs.profile }}
         run: conan create . -pr ${{ inputs.profile }} -s build_type=Release -b missing
 
+      - name: Check if `demos/` directory existence
+        id: check_demos_dir
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "demos/"
+
       - name: 🏗️ Build demos for ${{ inputs.profile }}
+        if: steps.check_demos_dir.outputs.files_exists == 'true'
         run: conan build demos -pr ${{ inputs.profile }} -s build_type=MinSizeRel
 
       - name: 🆙 Upload package to `libhal` repo

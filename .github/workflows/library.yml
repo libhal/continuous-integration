@@ -81,7 +81,7 @@ jobs:
     secrets: inherit
 
   publish_artifacts:
-    needs: [lint, docs, tests]
+    needs: [lint, tests]
     uses: ./.github/workflows/publish.yml
     with:
       library: ${{ inputs.library }}

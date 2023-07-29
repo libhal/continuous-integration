@@ -43,10 +43,8 @@ jobs:
       - name: 📖 Run Doxygen
         uses: mattnotmitt/doxygen-action@v1
         with:
-          working-directory: docs
           doxyfile-path: "doxygen.conf"
 
       - name: ⚠️ Read out any doxygen warnings
         if: always()
-        working-directory: docs
         run: cat doxygen_warn.log

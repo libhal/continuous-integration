@@ -37,10 +37,6 @@ jobs:
           submodules: true
           repository: ${{ inputs.repo }}
 
-      - name: Apply repo name to 'doxygen.conf' project name
-        working-directory: docs
-        run: echo PROJECT_NAME = ${{ github.event.repository.name }} >> doxygen.conf
-
       - name: 🌐 Downloading doxygen from ci
         run: wget https://raw.githubusercontent.com/libhal/ci/main/doxygen.conf -O doxygen.conf
 

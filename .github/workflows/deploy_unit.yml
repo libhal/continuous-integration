@@ -37,7 +37,7 @@ on:
 jobs:
   pull:
     runs-on: ubuntu-22.04
-    if: github.event.action == 'unpublished' && startsWith(github.ref, 'refs/tags/')
+    if: github.event.action == 'deleted'
     steps:
       - name: 📥 Install CMake + Conan
         run: pip3 install cmake conan==${{ inputs.conan_version }}
@@ -63,10 +63,10 @@ jobs:
         run: conan remote login -p $API_KEY libhal $JFROG_USER
 
       - name: 🚮 Pulling package version ${{ github.ref_name }} from `libhal` repo
-        run: conan remove "${{ inputs.library }}/${{ github.ref_name }}" --confirm -r=libhal
+        run: conan remove "${{ inputs.library }}/${{ github.event.release.tag_name }}" --confirm -r=libhal
   build:
     runs-on: ubuntu-22.04
-    if: github.event.action != 'unpublished'
+    if: github.event.action != 'deleted'
     steps:
       - uses: actions/checkout@v2
         with:

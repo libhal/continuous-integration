@@ -33,12 +33,6 @@ on:
       source_dir:
         default: "include/"
         type: string
-      skip_deploy:
-        default: false
-        type: boolean
-      app_folder:
-        type: string
-        default: "demos"
       repo:
         type: string
         default: ${{ github.repository }}

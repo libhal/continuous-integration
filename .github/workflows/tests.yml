@@ -77,7 +77,7 @@ jobs:
             compiler_version: 12
             os: ubuntu-22.04
             standard_library: libstdc++
-            installations:
+            installations: sudo apt install -y clang-tidy
             enable_coverage: ${{ inputs.coverage }}
             profile_path: profiles/x86_64/linux/
 
@@ -85,8 +85,15 @@ jobs:
             compiler_version: 14
             os: macos-12
             standard_library: libc++
-            installations:
+            installations: brew install llvm
             profile_path: profiles/x86_64/mac/
+
+          # - toolchain: gcc
+          #   compiler_version: 12
+          #   os: windows-2022
+          #   standard_library: libstdc++
+          #   installations: choco install python mingw make llvm
+          #   profile_path: profiles/x86_64/windows/
 
     runs-on: ${{ matrix.os }}
     steps:

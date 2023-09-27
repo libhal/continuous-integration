@@ -41,61 +41,8 @@ jobs:
         shell: bash
         run: sudo apt install libclang-11-dev
 
-      - name: 📥 Install pip package 'clang' & 'pyyaml' (for ncc)
-        shell: bash
-        run: python3 -m pip install clang==11.1 pyyaml
-
-      # Because inputs.library is required for workflow_calls, if this value is
-      # blank it means that the workflow was ran in libhal and not
-      # remotely.
-      - name: 🌐 Downloading .naming.style from libhal
-        run: wget https://raw.githubusercontent.com/libhal/libhal/main/.naming.style -O .naming.style
-
       - name: 🌐 Downloading .clang-format from libhal
         run: wget https://raw.githubusercontent.com/libhal/libhal/main/.clang-format -O .clang-format
-
-      - name: 📥 Install NCC (Naming Convention Check)
-        shell: bash
-        run: git clone https://github.com/nithinn/ncc.git ncc
-
-      - name: Check if `src/` directory existence
-        id: check_src_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: "src/"
-
-      - name: Check if `tests/` directory existence
-        id: check_tests_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: "tests/"
-
-      - name: 📃 Naming Convention Check in `include/` Directory
-        shell: bash
-        if: always()
-        run: |
-          ./ncc/ncc.py --recurse --path include/ \
-          --exclude */third_party/* \
-          --style .naming.style | tee ncc.stderr
-          [ ! -s ncc.stderr ]
-
-      - name: 📃 Naming Convention Check in `tests/`
-        shell: bash
-        if: always() && steps.check_tests_files.outputs.files_exists == 'true'
-        run: |
-          ./ncc/ncc.py --recurse --path ./tests/ \
-          --exclude */third_party/* \
-          --style .naming.style | tee ncc.stderr
-          [ ! -s ncc.stderr ]
-
-      - name: 📃 Naming Convention Check in `src/` Directory
-        shell: bash
-        if: always() && steps.check_src_files.outputs.files_exists == 'true'
-        run: |
-          ./ncc/ncc.py --recurse --path src/ \
-          --exclude */third_party/* \
-          --style .naming.style | tee ncc.stderr
-          [ ! -s ncc.stderr ]
 
       - name: 🧹 Format Check `src/` directory
         uses: DoozyX/clang-format-lint-action@v0.15

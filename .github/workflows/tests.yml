@@ -85,7 +85,7 @@ jobs:
             compiler_version: 14
             os: macos-12
             standard_library: libc++
-            installations: brew install llvm
+            installations: brew install llvm && sudo ln -s /opt/homebrew/opt/llvm/bin/clang-tidy /usr/local/bin/clang-tidy
             profile_path: profiles/x86_64/mac/
 
           # - toolchain: gcc

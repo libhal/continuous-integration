@@ -77,7 +77,7 @@ jobs:
             compiler_version: 12
             os: ubuntu-22.04
             standard_library: libstdc++
-            installations: sudo apt install -y clang-tidy
+            installations: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" && sudo apt-get install -y clang-tidy-16
             enable_coverage: ${{ inputs.coverage }}
             profile_path: profiles/x86_64/linux/
 
@@ -92,7 +92,7 @@ jobs:
           #   compiler_version: 12
           #   os: windows-2022
           #   standard_library: libstdc++
-          #   installations: choco install python mingw make llvm
+          #   installations: choco install python mingw make && choco install llvm --version=16.0.6
           #   profile_path: profiles/x86_64/windows/
 
     runs-on: ${{ matrix.os }}
@@ -123,7 +123,12 @@ jobs:
         run: conan config install -sf ${{ matrix.profile_path }} -tf profiles https://github.com/libhal/conan-config.git
 
       - name: 🔬 Create & Run Unit Tests
-        run: conan create . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
+        if: ${{ runner.os != 'Windows' }}
+        run: VERBOSE=1 conan create . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
+
+      - name: 🔬 Create & Run Unit Tests
+        if: ${{ runner.os == 'Windows' }}
+        run: $env:VERBOSE = 1 ; conan create . --build=missing -s compiler.cppstd=20 -s compiler.version=${{ matrix.compiler_version }} -s compiler.libcxx=${{ matrix.standard_library }} -s compiler=${{ matrix.toolchain }} -s build_type=Debug
 
       - name: 🔬 Build & Run Unit Tests (for coverage)
         if: ${{ matrix.enable_coverage }}

@@ -42,8 +42,11 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.event.action == 'deleted'
     steps:
-      - name: 📥 Install CMake + Conan
-        run: pip3 install cmake conan==${{ inputs.conan_version }}
+      - name: 📥 Install CMake 3.27.7
+        run: pip3 install cmake==3.27.7
+
+      - name: 📥 Install Conan ${{ inputs.conan_version }}
+        run: pip3 install conan==${{ inputs.conan_version }}
 
       - name: 📡 Add `libhal` repo to conan remotes
         run: conan remote add libhal
@@ -77,7 +80,7 @@ jobs:
             compiler_version: 12
             os: ubuntu-22.04
             standard_library: libstdc++
-            installations: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" && sudo apt-get install -y clang-tidy-16
+            installations: sudo apt install -y clang-tidy-15
             enable_coverage: ${{ inputs.coverage }}
             profile_path: profiles/x86_64/linux/
 
@@ -106,8 +109,11 @@ jobs:
         if: ${{ matrix.installations != '' }}
         run: ${{ matrix.installations }}
 
-      - name: 📥 Install CMake + Conan
-        run: pip3 install cmake conan==${{ inputs.conan_version }}
+      - name: 📥 Install CMake 3.27.7
+        run: pip3 install cmake==3.27.7
+
+      - name: 📥 Install Conan ${{ inputs.conan_version }}
+        run: pip3 install conan==${{ inputs.conan_version }}
 
       - name: 📡 Add `libhal` repo to conan remotes
         run: conan remote add libhal

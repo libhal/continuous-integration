@@ -26,7 +26,7 @@ on:
         default: ${{ github.repository }}
       conan_version:
         type: string
-        default: "2.0.6"
+        default: "2.0.13"
       profile:
         type: string
         required: true
@@ -46,8 +46,11 @@ jobs:
           submodules: true
           repository: ${{ inputs.repo }}
 
-      - name: 📥 Install CMake + Conan
-        run: pip3 install cmake conan==${{ inputs.conan_version }}
+      - name: 📥 Install CMake 3.27.7
+        run: pip3 install cmake==3.27.7
+
+      - name: 📥 Install Conan ${{ inputs.conan_version }}
+        run: pip3 install conan==${{ inputs.conan_version }}
 
       - name: 📡 Add `libhal` repo to conan remotes
         run: conan remote add libhal

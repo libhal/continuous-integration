@@ -28,7 +28,7 @@ on:
         default: ${{ github.repository }}
       conan_version:
         type: string
-        default: "2.0.13"
+        default: "2.0.6"
 
 jobs:
   cortex-m0:

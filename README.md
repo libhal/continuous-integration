@@ -209,7 +209,7 @@ Inputs:
 - `repo`: The GitHub repository where the library is located. Default is the
   repository where the workflow is running.
 - `conan_version`: The version of Conan to use for building the library. Default
-  is "2.0.13".
+  is "2.0.14".
 
 This workflow is designed to be used in any GitHub Actions workflow by
 referencing it with the `uses` keyword and providing the necessary inputs. If an
@@ -228,7 +228,7 @@ Inputs:
 - `repo`: The GitHub repository where the library is located. Default is the
   repository where the workflow is running.
 - `conan_version`: The version of Conan to use for building the library. Default
-  is "2.0.13".
+  is "2.0.14".
 
 This workflow creates a job for each supported device and architecture. Each job
 uses the `deploy_unit.yml` workflow to build a package for the specified device
@@ -253,7 +253,7 @@ Inputs:
 - `repo`: The GitHub repository where the library is located. Default is the
   repository where the workflow is running.
 - `conan_version`: The version of Conan to use for building the library. Default
-  is "2.0.13".
+  is "2.0.14".
 - `profile`: The profile to use for building the package. This input is
   required.
 - `upload`: A boolean value indicating whether to upload the built package to
@@ -289,7 +289,7 @@ Inputs:
 - `repo`: The GitHub repository where the library is located. Default is the
   repository where the workflow is running.
 - `conan_version`: The version of Conan to use for building the library. Default
-  is "2.0.13".
+  is "2.0.14".
 - `profile`: The profile to use for building the demo. This input is required.
 - `processor_profile`: The URL of the processor profile to use for building the
   demo. Default is an empty string.

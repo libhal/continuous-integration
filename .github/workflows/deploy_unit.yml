@@ -26,7 +26,7 @@ on:
         default: ${{ github.repository }}
       conan_version:
         type: string
-        default: "2.0.13"
+        default: "2.0.14"
       profile:
         required: true
         type: string
@@ -101,13 +101,10 @@ jobs:
           JFROG_USER: ${{ secrets.JFROG_LIBHAL_TRUNK_USER }}
         run: conan remote login -p $API_KEY libhal $JFROG_USER
 
-      - name: Install libhal settings_user.yml
+      - name: 📡 Install libhal settings_user.yml
         run: conan config install -sf profiles/baremetal https://github.com/libhal/conan-config.git
 
-      - name: Install host OS profiles
-        run: conan config install -sf profiles/x86_64/linux/ -tf profiles https://github.com/libhal/conan-config.git
-
-      - name: Install profiles processor profiles
+      - name: 📡 Install processor profiles
         run: conan config install -tf profiles -sf conan/profiles/ ${{ inputs.profile_source }}
 
       - name: 📦 Create `Debug` package for ${{ inputs.profile }}

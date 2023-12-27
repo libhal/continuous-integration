@@ -42,11 +42,7 @@ jobs:
         run: pip install conan
 
       - run: mkdir docs
-
       - uses: actions/download-artifact@master
-        with:
-          name: coverage
-          path: docs/coverage
 
       - name: Generate Latest Version Badge
         run: wget "https://img.shields.io/badge/Latest%20Version-$(conan inspect . | grep version | cut -c 10- | sed s/-/~/ )-green" -O docs/latest_version.svg

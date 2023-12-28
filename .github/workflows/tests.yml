@@ -171,8 +171,8 @@ jobs:
           grep -Eo 'https://img.shields.io/badge/[^)]*')
           -O build/coverage/coverage.svg
 
-      - uses: actions/upload-artifact@v3
-        if: ${{ matrix.enable_coverage }}
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main' && github.repository == inputs.repo
         with:
           name: coverage
           retention-days: 1
